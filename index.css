@@ -20,7 +20,7 @@ input {
   /* background: rgba(0,0,0,0.3); */
   color: #ccc;
   z-index: 10000;
-  padding-left: 40px;
+  padding-left: 80px;
 }
 
 #container span {

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "set env=1&& electron .",
+    "start2": "set env=2&& electron ."
   },
   "author": "",
   "license": "ISC",

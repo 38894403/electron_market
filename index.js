@@ -1,14 +1,21 @@
-const { app, BrowserWindow, Menu } = require("electron")
+const { app, BrowserWindow, Menu, ipcMain } = require("electron")
+
+const envValue = process.env.env
+
+// 监听渲染进程的请求，发送环境变量
+ipcMain.handle("get-env", () => {
+  return envValue
+})
 
 let mainWindow = null
 app.on("ready", () => {
   mainWindow = new BrowserWindow({
-    width: 300,
+    width: 600,
     height: 80,
     frame: false, // 隐藏任务栏
     alwaysOnTop: true, // 窗口置顶
     transparent: true,
-    backgroundColor: '#00000000',
+    backgroundColor: "#00000000",
     webPreferences: {
       // devTools: true,
       nodeIntegration: true, //设置为true就可以在这个渲染进程中调用Node.js
