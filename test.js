@@ -2,6 +2,9 @@ const { ipcRenderer } = require("electron")
 const { TYPE_1 } = require("./codes/type1")
 const { TYPE_2 } = require("./codes/type2")
 
+// import { ipcRenderer } from "electron"
+// import { TYPE_1 } from "./codes/type1"
+// import { TYPE_2 } from "./codes/type2"
 
 let priceDomList = []
 
@@ -19,7 +22,7 @@ function renderPrice(diff) {
 }
 
 getEnv().then((envValue) => {
-  const codeArr = envValue === "1" ? TYPE_1 : TYPE_2
+  const codeArr = envValue === "2" ? TYPE_2 : TYPE_1
 
   var defaultCode = codeArr.map((item) => item.code).join(",")
 

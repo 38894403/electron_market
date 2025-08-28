@@ -31,6 +31,21 @@ input {
 #container .popover {
   position: absolute;
   top: 0px;
-  left: 0;
+  left: 14px;
   color: #ccc;
 }
+#closeButton {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 10001;
+  -webkit-app-region: no-drag;
+  pointer-events: auto;
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px;
+  color: #ccc;
+  font-size: 12px;
+  
+}
+

@@ -8,6 +8,7 @@ ipcMain.handle("get-env", () => {
 })
 
 let mainWindow = null
+let isQuitting = false
 app.on("ready", () => {
   mainWindow = new BrowserWindow({
     width: 600,
@@ -17,8 +18,9 @@ app.on("ready", () => {
     transparent: true,
     backgroundColor: "#00000000",
     webPreferences: {
-      // devTools: true,
+      devTools: true,
       nodeIntegration: true, //设置为true就可以在这个渲染进程中调用Node.js
+      contextIsolation: false, // 禁用上下文隔离
     },
   })
 
@@ -32,10 +34,18 @@ app.on("ready", () => {
 
   mainWindow.on("close", (e) => {
     // 在窗口要关闭的时候触发
-    e.preventDefault() // 避免进程意外关闭导致进程销毁
+    if (!isQuitting) {
+      e.preventDefault() // 避免进程意外关闭导致进程销毁
+    }
   })
 
   mainWindow.on("closed", () => {
     // 当窗口已经关闭的时候触发
   })
+})
+
+// 监听渲染进程的退出指令
+ipcMain.on("app-quit", () => {
+  isQuitting = true
+  app.quit()
 })

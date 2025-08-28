@@ -6,11 +6,26 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "set env=1&& electron .",
-    "start2": "set env=2&& electron ."
+    "start2": "set env=2&& electron .",
+    "package": "set env=1&& electron-builder --win"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "electron": "^10.1.5"
+  "devDependencies": {
+    "electron": "^37.3.1",
+    "electron-builder": "^22.10.5"
+  },
+  "build": {
+    "appId": "com.example.market",
+    "productName": "Market",
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "directories": {
+      "output": "dist"
+    }
   }
 }

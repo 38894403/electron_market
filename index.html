@@ -7,9 +7,17 @@
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
+    <span id="closeButton">X</span>
     <div id="container">
       <div class="popover"></div>
     </div>
   </body>
   <script src="./test.js"></script>
+  <script>
+    // 添加关闭按钮事件监听
+    document.getElementById('closeButton').addEventListener('click', () => {
+      const { ipcRenderer } = require('electron');
+      ipcRenderer.send('app-quit');
+    });
+  </script>
 </html>
