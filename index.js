@@ -12,7 +12,7 @@ let isQuitting = false
 app.on("ready", () => {
   mainWindow = new BrowserWindow({
     width: 600,
-    height: 80,
+    height: 130,
     frame: false, // 隐藏任务栏
     alwaysOnTop: true, // 窗口置顶
     transparent: true,
@@ -21,13 +21,15 @@ app.on("ready", () => {
       devTools: true,
       nodeIntegration: true, //设置为true就可以在这个渲染进程中调用Node.js
       contextIsolation: false, // 禁用上下文隔离
+      enableRemoteModule: true, // 启用远程模块
     },
   })
 
   mainWindow.setMenu(null)
   Menu.setApplicationMenu(null)
 
-  mainWindow.loadFile("index.html") // 加载本地文件
+  // mainWindow.loadFile("index.html") // 加载本地文件
+  mainWindow.loadFile("demo/demo.html") // 加载本地文件
   // mainWindow.loadURL('https://zhuiyi.ai/'); // 加载远程文件
 
   // mainWindow.webContents.openDevTools({ mode: "bottom" }) // 控制台开关

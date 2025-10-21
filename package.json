@@ -27,5 +27,8 @@
     "directories": {
       "output": "dist"
     }
+  },
+  "dependencies": {
+    "vue": "^3.5.21"
   }
 }

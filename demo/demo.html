@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Market App</title>
+    <link rel="stylesheet" href="./demo.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div @click="closeApp" class="close-button">X</div>
+      <div class="container">
+        <!-- <p>{{ message }}</p> -->
+        <button @click="showType1 = !showType1" class="toggle-btn">
+          {{ showType1 ? '隐藏' : '显示' }}TYPE1
+        </button>
+        <button @click="showType2 = !showType2" class="toggle-btn">
+          {{ showType2 ? '隐藏' : '显示' }}TYPE2
+        </button>
+        <div class="name">{{ currentName }}</div>
+        <!-- <market-component v-if="showComponent"></market-component> -->
+        <market-panel v-if="showType1" type="type1" @change-name="changeName"></market-panel>
+        <market-panel v-if="showType2" type="type2" @change-name="changeName"></market-panel>
+      </div>
+    </div>
+  </body>
+  <script src="../node_modules/vue/dist/vue.global.js"></script>
+  <script src="./components/MarketPanel.js"></script>
+  <!-- <script src="./components/MarketComponent.js"></script> -->
+  <script src="./app.js"></script>
+</html>
