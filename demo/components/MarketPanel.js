@@ -1,11 +1,20 @@
 const { ipcRenderer } = require("electron")
 const { TYPE_1 } = require("../codes/type1")
-const { TYPE_2 } = require("../codes/type2")
 // const { onMounted } = require("vue")
+
+// 异步获取TYPE_2数据
+async function getType2Data() {
+  try {
+    return await ipcRenderer.invoke('get-type2-config');
+  } catch (error) {
+    console.error('获取TYPE_2配置数据失败:', error);
+    return [];
+  }
+}
 
 const typeMap = {
   'type1': TYPE_1,
-  'type2': TYPE_2,
+  'type2': null, // 将在运行时动态获取
 }
 
 // Vue组件示例
@@ -42,10 +51,22 @@ const MarketPanel = {
       return envValue
     },
 
-    init() {
-      this.getEnv().then((envValue) => {
-        // const codeArr = envValue === "2" ? TYPE_2 : TYPE_1
-        const codeArr = typeMap[this.type]
+    async init() {
+      try {
+        const envValue = await this.getEnv();
+        let codeArr;
+        
+        if (this.type === 'type2') {
+          // 异步获取TYPE_2数据
+          codeArr = await getType2Data();
+        } else {
+          codeArr = typeMap[this.type];
+        }
+
+        if (!codeArr || codeArr.length === 0) {
+          console.error('无法获取配置数据');
+          return;
+        }
 
         var defaultCode = codeArr.map((item) => item.code).join(",")
         this.priceList = codeArr.map((item) => {
@@ -70,7 +91,9 @@ const MarketPanel = {
           console.log("LOG source.onerror :", err)
           source.close()
         }
-      })
+      } catch (error) {
+        console.error('初始化失败:', error);
+      }
     },
 
     renderPrice(diff) {

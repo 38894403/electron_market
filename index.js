@@ -1,10 +1,58 @@
 const { app, BrowserWindow, Menu, ipcMain } = require("electron")
+const fs = require('fs')
+const path = require('path')
+const os = require('os')
 
 const envValue = process.env.env
+
+// 获取配置文件路径
+function getConfigPath() {
+  const userHome = os.homedir()
+  const configDir = path.join(userHome, '.market-app')
+  const configFile = path.join(configDir, 'type2_config.json')
+  
+  // 确保配置目录存在
+  if (!fs.existsSync(configDir)) {
+    fs.mkdirSync(configDir, { recursive: true })
+  }
+  
+  // 如果配置文件不存在，创建默认配置
+  if (!fs.existsSync(configFile)) {
+    const defaultConfig = {
+      "TYPE_2": [
+        {
+          "code": "122.XAU",
+          "text": "金-美"
+        }
+      ]
+    }
+    fs.writeFileSync(configFile, JSON.stringify(defaultConfig, null, 2), 'utf8')
+  }
+  
+  return configFile
+}
+
+// 读取TYPE_2配置数据
+function loadType2Config() {
+  try {
+    const configPath = getConfigPath()
+    const configData = fs.readFileSync(configPath, 'utf8')
+    const config = JSON.parse(configData)
+    return config.TYPE_2 || []
+  } catch (error) {
+    console.error('读取TYPE_2配置文件失败:', error)
+    return []
+  }
+}
 
 // 监听渲染进程的请求，发送环境变量
 ipcMain.handle("get-env", () => {
   return envValue
+})
+
+// 监听渲染进程的请求，发送TYPE_2配置数据
+ipcMain.handle("get-type2-config", () => {
+  return loadType2Config()
 })
 
 let mainWindow = null
