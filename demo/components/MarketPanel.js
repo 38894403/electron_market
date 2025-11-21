@@ -12,9 +12,20 @@ async function getType2Data() {
   }
 }
 
+// 异步获取TYPE_3数据
+async function getType3Data() {
+  try {
+    return await ipcRenderer.invoke('get-type3-config');
+  } catch (error) {
+    console.error('获取TYPE_3配置数据失败:', error);
+    return [];
+  }
+}
+
 const typeMap = {
   'type1': TYPE_1,
   'type2': null, // 将在运行时动态获取
+  'type3': null, // 将在运行时动态获取
 }
 
 // Vue组件示例
@@ -72,6 +83,9 @@ const MarketPanel = {
         if (this.type === 'type2') {
           // 异步获取TYPE_2数据
           codeArr = await getType2Data();
+        } else if (this.type === 'type3') {
+          // 异步获取TYPE_3数据
+          codeArr = await getType3Data();
         } else {
           codeArr = typeMap[this.type];
         }

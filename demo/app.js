@@ -9,6 +9,7 @@ const app = createApp({
       currentName: '',
       showType1: false,
       showType2: false,
+      showType3: false,
     }
   },
   methods: {

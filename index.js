@@ -5,17 +5,24 @@ const os = require('os')
 
 const envValue = process.env.env
 
-// 获取配置文件路径
-function getConfigPath() {
+// 获取配置目录
+function getConfigDir() {
   const userHome = os.homedir()
   const configDir = path.join(userHome, '.market-app')
-  const configFile = path.join(configDir, 'type2_config.json')
-  
+
   // 确保配置目录存在
   if (!fs.existsSync(configDir)) {
     fs.mkdirSync(configDir, { recursive: true })
   }
-  
+
+  return configDir
+}
+
+// 获取 TYPE_2 配置文件路径
+function getType2ConfigPath() {
+  const configDir = getConfigDir()
+  const configFile = path.join(configDir, 'type2_config.json')
+
   // 如果配置文件不存在，创建默认配置
   if (!fs.existsSync(configFile)) {
     const defaultConfig = {
@@ -28,19 +35,53 @@ function getConfigPath() {
     }
     fs.writeFileSync(configFile, JSON.stringify(defaultConfig, null, 2), 'utf8')
   }
-  
+
+  return configFile
+}
+
+// 获取 TYPE_3 配置文件路径
+function getType3ConfigPath() {
+  const configDir = getConfigDir()
+  const configFile = path.join(configDir, 'type3_config.json')
+
+  // 如果配置文件不存在，创建默认配置
+  if (!fs.existsSync(configFile)) {
+    const defaultConfig = {
+      "TYPE_3": [
+        {
+          "code": "1.000001",
+          "text": "上证指数"
+        }
+      ]
+    }
+    fs.writeFileSync(configFile, JSON.stringify(defaultConfig, null, 2), 'utf8')
+  }
+
   return configFile
 }
 
 // 读取TYPE_2配置数据
 function loadType2Config() {
   try {
-    const configPath = getConfigPath()
+    const configPath = getType2ConfigPath()
     const configData = fs.readFileSync(configPath, 'utf8')
     const config = JSON.parse(configData)
     return config.TYPE_2 || []
   } catch (error) {
     console.error('读取TYPE_2配置文件失败:', error)
+    return []
+  }
+}
+
+// 读取TYPE_3配置数据
+function loadType3Config() {
+  try {
+    const configPath = getType3ConfigPath()
+    const configData = fs.readFileSync(configPath, 'utf8')
+    const config = JSON.parse(configData)
+    return config.TYPE_3 || []
+  } catch (error) {
+    console.error('读取TYPE_3配置文件失败:', error)
     return []
   }
 }
@@ -53,6 +94,11 @@ ipcMain.handle("get-env", () => {
 // 监听渲染进程的请求，发送TYPE_2配置数据
 ipcMain.handle("get-type2-config", () => {
   return loadType2Config()
+})
+
+// 监听渲染进程的请求，发送TYPE_3配置数据
+ipcMain.handle("get-type3-config", () => {
+  return loadType3Config()
 })
 
 let mainWindow = null

@@ -12,15 +12,19 @@
       <div class="container">
         <!-- <p>{{ message }}</p> -->
         <button @click="showType1 = !showType1" class="toggle-btn">
-          {{ showType1 ? '隐藏' : '显示' }}TYPE1
+          {{ showType1 ? 'x' : '√' }}TYPE1
         </button>
         <button @click="showType2 = !showType2" class="toggle-btn">
-          {{ showType2 ? '隐藏' : '显示' }}TYPE2
+          {{ showType2 ? 'x' : '√' }}TYPE2
+        </button>
+        <button @click="showType3 = !showType3" class="toggle-btn">
+          {{ showType3 ? 'x' : '√' }}TYPE3
         </button>
         <div class="name">{{ currentName }}</div>
         <!-- <market-component v-if="showComponent"></market-component> -->
         <market-panel v-if="showType1" type="type1" @change-name="changeName"></market-panel>
         <market-panel v-if="showType2" type="type2" @change-name="changeName"></market-panel>
+        <market-panel v-if="showType3" type="type3" @change-name="changeName"></market-panel>
       </div>
     </div>
   </body>
